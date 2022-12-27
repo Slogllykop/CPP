@@ -14,12 +14,6 @@ class Student {
             std::cout<<"Enter marks : "; std::cin>>marks;
             std::cout<<std::endl;
         }
-
-        void display () {
-            std::cout << "Name: " << name << std::endl;
-            std::cout << "Roll No: " << roll << std::endl;
-            std::cout << "Marks: " << marks << std::endl;
-        }
 };
 
 int main() {
