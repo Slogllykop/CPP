@@ -20,13 +20,13 @@ int main() {
     {
         case 1:
             for(int i = 0; i < n; i++) std::cin >> A[i];
-            selectionSort(A, n);
+            selectionSort<int>(A, n);
             for(int i = 0; i < n; i++) std::cout << A[i] << " ";
             break;
         
         case 2:
             for(int i = 0; i < n; i++) std::cin >> B[i];
-            selectionSort(B, n);
+            selectionSort<float>(B, n);
             for(int i = 0; i < n; i++) std::cout << B[i] << " ";
             break;
 
