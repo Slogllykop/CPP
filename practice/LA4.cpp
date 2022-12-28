@@ -9,16 +9,16 @@ class Student {
 
         void getdata() {
             std::cin.ignore();
-            std::cout<<"Enter Name: "; getline(std::cin, name);
-            std::cout<<"Enter Roll NO: "; std::cin>>roll;
-            std::cout<<"Enter marks : "; std::cin>>marks;
-            std::cout<<std::endl;
+            std::cout << "Enter Name: "; getline(std::cin, name);
+            std::cout << "Enter Roll NO: "; std::cin>>roll;
+            std::cout << "Enter marks : "; std::cin>>marks;
+            std::cout << std::endl;
         }
 };
 
 int main() {
     int n;
-    std::cout<<"Total Students: "; std::cin>>n;
+    std::cout << "Total Students: "; std::cin >> n;
 
     Student s[10];
 
