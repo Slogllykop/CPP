@@ -1,160 +1,111 @@
-// Develop a program in C++ to create a database of student’s
-// information system containing the following information:
-// Name, Roll number, Class, Division, Date of Birth, Blood
-// group, Contact address, Telephone number, Driving license
-// no. and other. Construct the database with suitable member
-// functions. Make use of constructor, default constructor, copy
-// constructor,
-// destructor, static member functions, friend class, this pointer,
-// inline code and dynamic memory allocation operators-new and
-// delete as well as exception handling.
+#include <iostream>
+#include <string>
+using namespace std;
 
-#include<iostream>            
-#include<string.h>            
-using namespace std;            
-#define max 100;
+class StudData;
 
-class per_info{
-    string lic, dob, bldgrp;    
+class Student {
+    string name, cls, dob;
+    int roll_no; static int count;
+    char* division;
+    char* bloodgroup;
+
     public:
-    per_info();                
-    per_info(per_info &);      
-    ~per_info() { cout<<"\nDESTRUCTOR IS CALLED!!!!!"<<endl<<"RECORD DELETED SUCCESSFULLY"<<endl; }
+        Student() {
+            name = "";
+            roll_no = 0;
+            cls = "";
+            division = new char;
+            bloodgroup = new char[3];
+            dob = "dd/mm/yyyy";
+        }
 
-    friend class student;                    
+        ~Student() { delete this; }
+        static int getCount() { return count; } 
+        inline void getData(StudData*);
+        inline void dispData(StudData*);
 };
 
-class student{
-    string name, address, year;                
-    char divi;
-    int roll_no;
-    long mob;
-    static int cnt;                        
+class StudData {
+    string caddress;
+    long int* telno;
+    long int* dlno;
+    friend class Student;
+
     public:
-    void create(per_info &);                
-    void display(per_info &);            
+        StudData() {
+            caddress = "Earth";
+            telno = new long;
+            dlno = new long;
+        }
 
-    inline static void inccnt() { cnt++; }
+        ~StudData() { delete this; }
 
-    inline static void showcnt() { cout<<"\nTOTAL NO OF RECORDS ARE : "<<cnt; }
+        void getStudData() {
+            cin.ignore();
+            cout << "Enter Contact Address : "; getline(cin, caddress);
+            cout << "Enter Telephone Number : "; cin >> *telno;
+            cout << "Enter Driving License Number : "; cin >> *dlno;
+        }
 
-    student();                          
-    student(student &);                
-    ~student() { cout<<"\nDESTRUCTOR IS CALLED!!!"<<endl<<"RECORD DELETED SUCCESSFULLY"<<endl; }
+        void dispStudData() {
+            cout<<"Contact Address : " << caddress << endl;
+            cout<<"Telephone Number : " << *telno << endl;
+            cout<<"Driving License Number : " << *dlno << endl;
+        }
 };
 
-int student::cnt;              
-student::student()                
-{
-    name="ANAGHA";
-    address="PUNE";
-    year="2";
-    divi='A';
-    roll_no=42;
-    mob=942329999;
-}
-per_info::per_info(){
-    lic="4676745656";
-    dob="02/11/2002";
-    bldgrp="A-";
+inline void Student::getData(StudData* st) {
+    cout << "\nEnter Student Name : "; getline(cin,name);
+    cout << "Enter Roll Number : "; cin >> roll_no;
+    cin.ignore();
+    cout << "Enter Class : "; getline(cin,cls);
+    cout << "Enter Division : "; cin >> division;
+    cin.ignore();
+    cout << "Enter Date of Birth : "; getline(cin,dob);
+    cout << "Enter Blood Group : "; cin >> bloodgroup;
+    st -> getStudData();
+    count++;
 }
 
-student::student(student &obj){
-    this->name=obj.name;            
-    this->address=obj.address;
-    this->year=obj.year;
-    this->divi=obj.divi;
-    this->roll_no=obj.roll_no;
-    this->mob=obj.mob;
-}
-per_info::per_info(per_info &obj){
-    lic=obj.lic;
-    dob=obj.dob;
-    bldgrp=obj.bldgrp;
+inline void Student::dispData(StudData* st1) {
+    cout << "Student Name : " << name << endl;
+    cout << "Roll Number : " << roll_no << endl;
+    cout << "Class : " << cls << endl;
+    cout << "Division : " << division << endl;
+    cout << "Date of Birth : " << dob << endl;
+    cout << "Blood Group : " << bloodgroup << endl;
+    st1 -> dispStudData();
 }
 
-void student::create(per_info &obj){
-    cout<<endl;
-    cout<<"------------------------------------"<<endl;
-    cout<<"NAME: "; cin>>name;
-    cout<<"ADDRESS: "; cin>>address;
-    cout<<"DATE OF BIRTH: "; cin>>obj.dob;
-    cout<<"YEAR: "; cin>>year;
-    cout<<"DIVISION: "; cin>>divi;
-    cout<<"ROLL NUMBER: "; cin>>roll_no;
-    cout<<"BLOOD GROUP: "; cin>>obj.bldgrp;
-    cout<<"LICENSE NUMBER: "; cin>>obj.lic;
-    cout<<"PHONE NUMBER: "; cin>>mob;
-}
+int Student::count;
 
-void student::display(per_info &obj){
-    cout<<"\n***********************"<<endl;
-    cout<<"NAME OF STUDENT: "<<name<<endl;
-    cout<<"ADDRESS OF STUDENT: "<<address<<endl;
-    cout<<"DATE OF BIRTH: "<<obj.dob<<endl;
-    cout<<"YEAR: "<<year<<endl;
-    cout<<"DIVISION: "<<divi<<endl;
-    cout<<"ROLL NO: "<<roll_no<<endl;
-    cout<<"BLOOD GROUP: "<<obj.bldgrp<<endl;
-    cout<<"LICENSE NUMBER: "<<obj.lic<<endl;
-    cout<<"PHONE NUMBER: "<<mob<<endl;
-    cout<<"***********************"<<endl;
-}
-
-int main(){
-    int n, ch;
-
-    cout<<"ENTER NO OF STUDENTS: ";
-    cin>>n;
-    cout<<"\n***********************"<<endl;
-    student *sobj=new student[n];                
-    per_info *pobj=new per_info[n];
+int main() {
+    Student* stud1[100];
+    StudData* stud2[100];
+    int n = 0;
+    char ch;
 
     do {
-        cout<<"\n Menu \n 1. Create Database \n 2. Display Databse \n 3. Copy Constructor\n 4. Default Constructor \n 5. Delete (Destructor) \n 6. Quit";
-        cout<<"\n Enter your Choice: ";
-        cin>>ch;
-        switch(ch){
-            case 1:
-                for(int i=0;i<n;i++) {
-                    sobj[i].create(pobj[i]);
-                    sobj[i].inccnt();
-                }
-                break;
-            
-            case 2:
-                sobj[0].showcnt();
-                for(int i=0;i<n;i++){
-                    sobj[i].display(pobj[i]);
-                }
-                break;
+        stud1[n] = new Student;
+        stud2[n] = new StudData;
+        stud1[n] -> getData(stud2[n++]);
+        cout << "Do you want to add another student (y/n) : "; cin >> ch;
+        cin.ignore();
+    } while (ch == 'y' || ch == 'Y');
 
-            case 3: {
-                student obj1;
-                per_info obj2;
-                obj1.create(obj2);
-                student obj3(obj1);        
-                per_info obj4(obj2);        
-                cout<<"\nCopy Constructor is called ";
-                obj3.display(obj4);
-                break;
-            }
-            case 4: {
-                student obj1;    
-                per_info obj2;    
-                cout<<"\nDefault Constructor is called ";
-                obj1.display(obj2);
-                break;
-            }
-            case 5:
-                delete [] sobj;            
-                delete [] pobj;        
-                break;
-            case 6:
-                cout<<"Thankyou!"<<endl;
-                break;
-        }
-    } while(ch!=6);
+    for(int i = 0; i < n; i++) {
+        cout << "---------------------------------------------------------------" << endl;
+        stud1[i] -> dispData(stud2[i]);
+    }
 
+    cout<<"---------------------------------------------------------------"<<endl;
+    cout<<"Total Students : "<<Student::getCount();
+    cout<<endl<<"---------------------------------------------------------------";
+
+    for(int i = 0; i < n; i++) {
+        delete stud1[i];
+        delete stud2[i];
+    }
     return 0;
 }
