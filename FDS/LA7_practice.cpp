@@ -9,7 +9,7 @@ struct Node {
 class Cinemax {
     public:
         Node *head, *tail, *temp;
-        Cinemax() { head = NULL; }
+        Cinemax() { head = NULL; tail = NULL; this -> create(); }
         void create();
         void display();
         void book();
@@ -18,7 +18,6 @@ class Cinemax {
 
 int main() {
     Cinemax A;
-    A.create();
     int flag = 1, choice;
     while (flag) {
         A.display();
